@@ -235,8 +235,17 @@
 			});
 			pnotify.opts = opts;
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : (opts.type == "success" ? styles.success : styles.notice)))})
-			.appendTo(pnotify);
+                        var stateClass;
+                        if (opts.state) {
+                            stateClass = 'ui-state-' + opts.state;
+                        } else if (styles[opts.type]) {
+                            stateClass = styles[opts.type];
+                        } else {
+                            stateClass = styles.notice;
+                        }
+			pnotify.container = $("<div />", {
+                            "class": styles.container + " ui-pnotify-container " + stateClass
+                        }).appendTo(pnotify);
 			if (opts.cornerclass != "")
 				pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
 			// Create a drop shadow.
@@ -861,7 +870,7 @@
 			this.fireEvent(e, event_object);
 		}
 	};
-        
+
 	$.pnotify.defaults = {
 		// The notice's title.
 		title: false,
@@ -927,8 +936,8 @@
 		stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25},
                 //Lets you change the displayed text, facilitating the internationalization.
                 labels: {
-                    redisplay: "Redisplay", 
-                    all: "All", 
+                    redisplay: "Redisplay",
+                    all: "All",
                     last: "Last",
                     close: "Close",
                     stick: "Stick"
